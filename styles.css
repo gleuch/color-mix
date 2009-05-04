@@ -1,0 +1,15 @@
+.c:after {content: "."; clear: both; display: block; visibility: hidden; height: 0;}
+
+fieldset {vertical-align: top; border: none; margin: 0; padding: 8px 0;}
+fieldset label {font-weight: bold; margin: 0 8px 0 0;}
+.ex_box {display: inline-block; width: 20px; height: 20px; background: #fff; border: 1px solid #e0e0e0; margin: 0 8px 0 0;}
+input[type="text"] {border: 1px solid #c0c0c0; font-size: 11px; width: 60px; padding: 2px 3px; line-height: 1.0em; margin: 0; vertical-align: bottom;}
+input#title {width: 250px;}
+input[type="submit"] {border: 1px solid #a0a0a0; font-size: 16px; font-weight: bold; padding: 4px 5px; line-height: 1.0em; margin: 0; vertical-align: bottom;}
+input[type="button"] {border: 1px solid #c0c0c0; font-size: 13px; font-weight: bold; padding: 3px 4px; color: #606060; background: #f9f9f9; line-height: 1.0em; margin: 0; vertical-align: bottom;}
+
+ul {margin: 20px auto; padding: 0; list-style: none; display: block;}
+ul.palette {display: inline-block; border: 1px solid #ccc; width: auto;}
+ul li.ex_box {list-style: none; clear: none; float: left; display: block; height: 150px; width: 50px; margin: 0; padding: 0; border: none;}
+ul.smaller {margin: 0;}
+ul.smaller li.ex_box {height: 25px; width: 25px;}
