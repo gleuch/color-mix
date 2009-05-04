@@ -2,23 +2,24 @@
           | |                         (_)     
   ___ ___ | | ___  _ __ ____ _ __ ___  ___  __
  / __/ _ \| |/ _ \| '__|____| '_ ` _ \| \ \/ /
-| (_| (_) | | (_) | |         | | | | | | |>  < 
- \___\___/|_|\___/|_|         |_| |_| |_|_/_/\_\
+| (_| (_) | | (_) | |       | | | | | | |>  < 
+ \___\___/|_|\___/|_|       |_| |_| |_|_/_/\_\
 
 
-----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
 
   by Greg Leuch
   http://www.gleuch.com/projects/color-mix
 
 
-----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
 
 
 WHAT:
 
-Creates random, saveable palettes from a collection of hexadecimal color values added to a collection
+Creates random, saveable palettes from a collection of hexadecimal color values added to a collection.
 
 
 
@@ -38,3 +39,4 @@ UPCOMING FEATURES & KNOWN BUGS:
 - Allow deletion of collections and palettes.
 - Possible user-lock functions (allow visitors to look, but not edit.)
 - Major style cleanup (make it look slick).
+
