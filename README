@@ -26,7 +26,7 @@ Creates random, saveable palettes from a collection of hexadecimal color values 
 INSTALL:
 
 1. Clone from github.
-2. Update line 2 of the .htaccess to reference the folder path for your installation.
+2. Rename .htaccess.sample to .htaccess and update line 16 (RewriteBase /) of the .htaccess to reference the folder path for your installation.
 3. Make sure the working directory has writable permissions.
 4. Run!
 
@@ -34,7 +34,6 @@ INSTALL:
 
 UPCOMING FEATURES & KNOWN BUGS:
 
-- Make saved palettes clickable to get code values.
 - Allow editing of collections.
 - Allow deletion of collections and palettes.
 - Possible user-lock functions (allow visitors to look, but not edit.)

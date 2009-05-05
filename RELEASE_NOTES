@@ -1,0 +1,30 @@
+           _                           _      
+          | |                         (_)     
+  ___ ___ | | ___  _ __ ____ _ __ ___  ___  __
+ / __/ _ \| |/ _ \| '__|____| '_ ` _ \| \ \/ /
+| (_| (_) | | (_) | |       | | | | | | |>  < 
+ \___\___/|_|\___/|_|       |_| |_| |_|_/_/\_\
+
+
+------------------------------------------------------------------------------------------------------
+
+
+  by Greg Leuch
+  http://www.gleuch.com/projects/color-mix
+
+
+------------------------------------------------------------------------------------------------------
+
+
+04 May 2009
+
+  - Added initial project.
+  
+
+05 May 2009
+
+  - Added saved history of random palettes (in case you wanted to save one you accidently refreshed.)
+  - Made able to view saved palette
+  - Added .htaccess.sample
+  - Minor style cleanups
+  - Added hex code to title tags on colors.

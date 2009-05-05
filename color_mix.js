@@ -1,20 +1,3 @@
-/*
-           _                           _      
-          | |                         (_)     
-  ___ ___ | | ___  _ __ ____ _ __ ___  ___  __
- / __/ _ \| |/ _ \| '__|____| '_ ` _ \| \ \/ /
-| (_| (_) | | (_) | |       | | | | | | |>  < 
- \___\___/|_|\___/|_|       |_| |_| |_|_/_/\_\
-
-
-------------------------------------------------
-  by Greg Leuch
-  http://www.gleuch.com/projects/color-mix
-------------------------------------------------
-
-*/
-
-
 $.fn.watch_colors = function() {
   return this.keypress(function(e) {return (e.keyCode == 13 ? false : true);}).each(function() {
     this.value = this.value.replace(/\#/ig, '').replace(/[G-Z\s\_\-\.\?]/ig, '');

@@ -1,20 +1,4 @@
 <?php
-/*
-           _                           _      
-          | |                         (_)     
-  ___ ___ | | ___  _ __ ____ _ __ ___  ___  __
- / __/ _ \| |/ _ \| '__|____| '_ ` _ \| \ \/ /
-| (_| (_) | | (_) | |       | | | | | | |>  < 
- \___\___/|_|\___/|_|       |_| |_| |_|_/_/\_\
-
-
-------------------------------------------------
-  by Greg Leuch
-  http://www.gleuch.com/projects/color-mix
-------------------------------------------------
-
-*/
-
 
 class ColorMix {
   function ColorMix() {
@@ -31,18 +15,20 @@ class ColorMix {
   }
 
   function route() {
-    list($this->controller, $this->action, $etc) = explode("/", $_REQUEST['folder']);
+    list($this->controller, $this->action, $this->subcontroller, $this->subaction) = explode("/", $_REQUEST['folder']);
     switch ($this->controller) {
       case 'create':
-        $this->create(); break;
+        $this->create_collection(); break;
       case 'new':
-        $this->build(); break;
+        $this->build_collection(); break;
       case 'save':
-        $this->save(); break;
+        $this->save_palette(); break;
       case 'make':
-        $this->make(); break;
+        $this->make_palette(); break;
       case 'show':
-        $this->show(); break;
+        $this->show_collection(); break;
+      case 'palette':
+        $this->show_palette(); break;
       case 'index':
       default:
         $this->index(); break;
@@ -77,7 +63,7 @@ class ColorMix {
     $this->html .= '<h4><a href="new">Create a new collection</a></h4>';
   }
 
-  function build() {
+  function build_collection() {
     $this->html = '<h1>Create a collection!</h1>'. $this->error .'<form action="'. $this->folder .'/create" method="post"><fieldset class="title"><label for="title">Collection Name</label><input id="title" type="text" name="title" value="'. (isset($_POST['title']) ? $_POST['title'] : '') .'" /></fieldset><div id="colors">';
     if (isset($_POST['color']) && count($_POST['color']) > 0) {
       foreach ($_POST['color'] as $v) {
@@ -89,7 +75,7 @@ class ColorMix {
     $this->html .= '</div><p><input id="another_palette" type="button" value="Add another color" /></p><fieldset><input type="submit" value="Mix collection!" /></fieldset></form>';
   }
   
-  function create() {
+  function create_collection() {
     if (!isset($_POST) || count($_POST) == 0) {
       $this->error = true;
     } else {
@@ -111,7 +97,7 @@ class ColorMix {
     }
   }
 
-  function make() {
+  function make_palette() {
     if (empty($this->action)) $this->err('You must specify a collection.');
     $colors = explode("\n", str_replace("\n\n", '', file_get_contents('./palettes/'. $this->action .'/master')));
     $title = array_shift($colors);
@@ -125,21 +111,43 @@ class ColorMix {
       --$len;
     }
 
+    //if (!is_file('./palettes/'. $this->action .'/history')) touch('./palettes/'. $this->action .'/history');
+
     $this->html = '<h1>Colors for '. $title .'</h1><ul class="palette c">';
     foreach ($mix as $k=>$v) {
-      $this->html .= '<li class="ex_box" style="background: #'. $v .';"></li>';
+      $this->html .= '<li class="ex_box" title="#'. $v .'" style="background: #'. $v .';"></li>';
       $box .= '<dd>#'. $v .'</dd>';
       $data .= (!empty($data) ? ',' : ''). "'color[". $k ."]':'". $v ."'";
     }
-    $this->html .= '</ul><p>&nbsp;</p><p><a href="'. $this->folder .'/make/'. $this->action .'">Again!</a></p><p>&nbsp;</p><dl><dt>Colors in this palette:</dt>'. $box .'</dl>';
-    
     $ajax = "var r = this; \$.ajax({type: 'GET', url: '". $this->folder ."/save/". $this->action ."', data:{". $data ."}, success:function(t) {\$(r).before('This palette has been saved!').remove();}, failure:function() {alert('Could not save this palette!');} });";
+    $this->html .= '</ul><p><input type="button" onclick="location.href=\''. $this->folder .'/make/'. $this->action .'\';" value="Try Another Palette!" /></p><p><input type="button" onclick="'. $ajax .'; return false;" value="Save this palette" /></p><p>&nbsp;</p><dl><dt>Colors in this palette:</dt>'. $box .'</dl>';
 
-    $this->html .= '<p><input type="button" onclick="'. $ajax .'; return false;" value="Save this palette" /></p><p>&nbsp;</p><p><a href="'. $this->folder .'/show/'. $this->action .'">View Original Collection</a></p>';
-      
+    $this->html .= '<p>&nbsp;</p><p><a href="'. $this->folder .'/show/'. $this->action .'">View Original Collection</a></p>';
+
+
+    $this->html .= '<h3>Previous Palette Options</h3>';
+    $history = file_get_contents('./palettes/'. $this->action .'/history');
+    $p_colors = array_reverse(array_slice(explode("\n", trim($history)), -5, 5));
+    foreach ($p_colors as $v) {
+      $palette = explode(',', $v);
+      $data = '';
+      $this->html .= '<p><ul class="smaller c">';
+      foreach ($palette as $k=>$c) {
+        $data .= (!empty($data) ? ',' : ''). "'color[". $k ."]':'". $c ."'";
+        $this->html .= '<li class="ex_box" title="#'. $c .'" style="background: #'. $c .';"></li>';
+      }
+      $ajax = "var r = this; \$.ajax({type: 'GET', url: '". $this->folder ."/save/". $this->action ."', data:{". $data ."}, success:function(t) {\$(r).before('This palette has been saved!').remove();}, failure:function() {alert('Could not save this palette!');} });";
+      $this->html .= '<li class="left"><input type="button" onclick="'. $ajax .'; return false;" value="Save this palette" /></li></ul></p>';
+    }
+
+    if ($file = fopen('./palettes/'. $this->action .'/history', 'a+')) {
+      $r = implode(',', array_values($mix)) ."\n";
+      fwrite($file, $r);
+      fclose($file);
+    }
   }
 
-  function show() {
+  function show_collection() {
     if (empty($this->action)) $this->err('You must specify a collection.');
     $colors = explode("\n", str_replace("\n\n", '', file_get_contents('./palettes/'. $this->action .'/master')));
     $title = array_shift($colors);
@@ -155,8 +163,8 @@ class ColorMix {
         if ($file != "." && $file != ".." && $file != 'master' && is_file('./palettes/'. $this->action .'/'. $file)) {
           $saved .= '<p><ul class="palette smaller c">';
           $colors = explode("\n", str_replace("\n\n", '', file_get_contents('./palettes/'. $this->action .'/'. $file)));
-          foreach ($colors as $v) $saved .= '<li class="ex_box" style="background: #'. $v .';"></li>';
-          $saved .= '</ul></p>';
+          foreach ($colors as $v) $saved .= '<li class="ex_box" title="#'. $v .'" style="background: #'. $v .';"></li>';
+          $saved .= '<li class="textlink"><a href="'. $this->folder .'/palette/'. $this->action .'/'. $file .'">View</a></li></ul></p>';
         }
       }
       closedir($handle);
@@ -166,7 +174,25 @@ class ColorMix {
     $this->html .= '<p><a href="'. $this->folder .'/make/'. $this->action .'">Make random palette!</a></p>';
   }
 
-  function save() {
+  function show_palette() {
+    if (empty($this->action)) $this->err('You must specify a collection.');
+    $colors = explode("\n", str_replace("\n\n", '', file_get_contents('./palettes/'. $this->action .'/'. $this->subcontroller)));
+    $title = array_shift($colors);
+
+    $this->html = '<h1>Colors for '. $this->action .'</h1><ul class="palette c">';
+    foreach ($colors as $v) {
+      $this->html .= '<li class="ex_box" title="#'. $v .'" style="background: #'. $v .';"></li>';
+      $box .= '<dd>#'. $v .'</dd>';
+    }
+    $this->html .= '</ul><p>&nbsp;</p><dl><dt>Colors in this palette:</dt>'. $box .'</dl>';
+    
+
+
+    $this->html .= (!empty($saved) ? $saved : '<p><em>There are no saved palettes for this collection.</em></p>');
+    $this->html .= '<p><a href="'. $this->folder .'/make/'. $this->action .'">Make random palette!</a></p>';
+  }
+
+  function save_palette() {
     $d = date("U");
     foreach ($_REQUEST['color'] as $v) $str .= (!empty($str) ? "\n" : '') . $v;
     if (!empty($v) && is_dir('./palettes/'. $this->action)) {

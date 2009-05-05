@@ -1,18 +1,4 @@
-/*
-           _                           _      
-          | |                         (_)     
-  ___ ___ | | ___  _ __ ____ _ __ ___  ___  __
- / __/ _ \| |/ _ \| '__|____| '_ ` _ \| \ \/ /
-| (_| (_) | | (_) | |       | | | | | | |>  < 
- \___\___/|_|\___/|_|       |_| |_| |_|_/_/\_\
-
-
-------------------------------------------------
-  by Greg Leuch
-  http://www.gleuch.com/projects/color-mix
-------------------------------------------------
-
-*/
+body, h1, h2, h3, h4, h5, h6, input, select, textarea {font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;}
 .c:after {content: "."; clear: both; display: block; visibility: hidden; height: 0;}
 
 fieldset {vertical-align: top; border: none; margin: 0; padding: 8px 0;}
@@ -28,3 +14,7 @@ ul.palette {display: inline-block; border: 1px solid #ccc; width: auto;}
 ul li.ex_box {list-style: none; clear: none; float: left; display: block; height: 150px; width: 50px; margin: 0; padding: 0; border: none;}
 ul.smaller {margin: 0;}
 ul.smaller li.ex_box {height: 25px; width: 25px;}
+ul li.textlink {clear: none; float: left; display: block; width: 75px; margin: 0; padding: 12px;}
+ul li.left {clear: none; float: left; display: block; padding: 0 6px;}
+
+dt {font-weight: bold;}
